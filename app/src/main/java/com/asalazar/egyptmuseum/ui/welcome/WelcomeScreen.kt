@@ -1,0 +1,117 @@
+package com.asalazar.egyptmuseum.ui.welcome
+
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
+import com.asalazar.egyptmuseum.ui.theme.component.MuseumHorizontalDivider
+import com.asalazar.egyptmuseum.ui.theme.component.PrimaryButton
+import com.asalazar.egyptmuseum.ui.theme.secondaryContainerDark
+
+private val DisplaySerifFont = FontFamily.Serif // Para "MUSEO INTERACTIVO" y "ANTIGUO EGIPTO"
+private val BodySansFont = FontFamily.SansSerif // Para "BIENVENIDO AL"
+private val ItalicSerifFont = FontFamily.Serif // Para "del" (Cursiva)
+
+private val MuseoGoldColor = Color(0xFFD4AF37)
+
+private val welcomeStyle = TextStyle(
+    fontFamily = BodySansFont,
+    fontWeight = FontWeight.Medium,
+    fontSize = 12.sp,
+    letterSpacing = 2.sp,
+    color = secondaryContainerDark,
+    textAlign = TextAlign.Center
+)
+
+private val connectorStyle = TextStyle(
+    fontFamily = ItalicSerifFont,
+    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+    fontSize = 18.sp,
+    color = secondaryContainerDark,
+    textAlign = TextAlign.Center
+)
+
+@Composable
+fun WelcomeScreen() {
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround
+        ) {
+            WelcomeText()
+            EnterButton() { }
+        }
+    }
+}
+
+@Composable
+private fun WelcomeText(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            "BIENVENIDO AL",
+            style = welcomeStyle,
+            modifier = Modifier.padding(bottom = 16.dp),
+        )
+        Text(
+            "MUSEO\nINTERACTIVO",
+            style = MaterialTheme.typography.displaySmall,
+            modifier = Modifier.padding(bottom = 12.dp),
+        )
+        Text(
+            "Del",
+            style = connectorStyle,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Text(
+            "ANTIGUO\nEGIPTO",
+            style = MaterialTheme.typography.displaySmall,
+        )
+        MuseumHorizontalDivider(
+            Modifier
+                .fillMaxWidth(0.6f)
+                .padding(top = 24.dp)
+        )
+    }
+}
+
+@Composable
+private fun EnterButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    PrimaryButton(onClick, modifier = modifier) {
+        Text(
+            "ENTRAR AL MUSEO",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL)
+@Composable
+private fun WelcomeScreenPreview() {
+    EgyptMuseumTheme {
+        WelcomeScreen()
+    }
+}
