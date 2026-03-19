@@ -12,18 +12,29 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
 
 @Composable
 fun ConfigurationScreen() {
 
+    val viewModel: ConfigurationViewModel =
+        remember { ConfigurationViewModel() } /*TODO: Implement factory*/
+    val fontScale by viewModel.fontScale.collectAsStateWithLifecycle()
+
+    ConfigurationContent(fontScale, onFontScaleChange = viewModel::updateFontScale)
 }
 
 @Composable
-private fun ConfigurationContent() {
+private fun ConfigurationContent(
+    fontScale: Float,
+    onFontScaleChange: (Float) -> Unit
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ConfigurationTopBar() }
@@ -33,7 +44,7 @@ private fun ConfigurationContent() {
                 .padding(it)
                 .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
-            SizeFontCard(0.1f) {}
+            FontSizeCard(fontScale, onValueChange = onFontScaleChange)
         }
 
     }
@@ -41,7 +52,7 @@ private fun ConfigurationContent() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfigurationTopBar(modifier: Modifier = Modifier) {
+fun ConfigurationTopBar() {
     MediumTopAppBar(
         title = { Title() },
         navigationIcon = {
@@ -65,6 +76,6 @@ private fun Title(modifier: Modifier = Modifier) {
 @Composable
 private fun ConfigurationContentPreview() {
     EgyptMuseumTheme {
-        ConfigurationContent()
+        ConfigurationContent(0.1f) {}
     }
 }

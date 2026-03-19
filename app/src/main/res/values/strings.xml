@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Egypt Museum</string>
+    <string name="title_welcome_to">BIENVENIDO AL</string>
+    <string name="title_interactive_museum">MUSEO\nINTERACTIVO</string>
+    <string name="title_connection">Del</string>
+    <string name="title_egypt">ANTIGUO\nEGIPTO</string>
+    <string-array name="lbl_font_size_options">
+        <item>PEQUEÑO</item>
+        <item>NORMAL</item>
+        <item>GRANDE</item>
+    </string-array>
 </resources>

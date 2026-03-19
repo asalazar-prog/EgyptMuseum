@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.asalazar.egyptmuseum.ui.configuration.ConfigurationScreen
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
 import com.asalazar.egyptmuseum.ui.welcome.WelcomeScreen
 
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             EgyptMuseumTheme {
-                WelcomeScreen()
+                ConfigurationScreen()
             }
         }
     }

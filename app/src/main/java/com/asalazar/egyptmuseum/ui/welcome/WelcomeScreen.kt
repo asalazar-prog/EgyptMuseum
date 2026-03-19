@@ -12,7 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -20,16 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.asalazar.egyptmuseum.R
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
 import com.asalazar.egyptmuseum.ui.theme.component.MuseumHorizontalDivider
 import com.asalazar.egyptmuseum.ui.theme.component.PrimaryButton
 import com.asalazar.egyptmuseum.ui.theme.secondaryContainerDark
 
-private val DisplaySerifFont = FontFamily.Serif // Para "MUSEO INTERACTIVO" y "ANTIGUO EGIPTO"
-private val BodySansFont = FontFamily.SansSerif // Para "BIENVENIDO AL"
-private val ItalicSerifFont = FontFamily.Serif // Para "del" (Cursiva)
-
-private val MuseoGoldColor = Color(0xFFD4AF37)
+private val BodySansFont = FontFamily.SansSerif
+private val ItalicSerifFont = FontFamily.Serif
 
 private val welcomeStyle = TextStyle(
     fontFamily = BodySansFont,
@@ -57,7 +55,7 @@ fun WelcomeScreen() {
             verticalArrangement = Arrangement.SpaceAround
         ) {
             WelcomeText()
-            EnterButton() { }
+            EnterButton {/* TODO */ }
         }
     }
 }
@@ -70,22 +68,22 @@ private fun WelcomeText(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "BIENVENIDO AL",
+            stringResource(R.string.title_welcome_to),
             style = welcomeStyle,
             modifier = Modifier.padding(bottom = 16.dp),
         )
         Text(
-            "MUSEO\nINTERACTIVO",
+            stringResource(R.string.title_interactive_museum),
             style = MaterialTheme.typography.displaySmall,
             modifier = Modifier.padding(bottom = 12.dp),
         )
         Text(
-            "Del",
+            stringResource(R.string.title_connection),
             style = connectorStyle,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(
-            "ANTIGUO\nEGIPTO",
+            stringResource(R.string.title_egypt),
             style = MaterialTheme.typography.displaySmall,
         )
         MuseumHorizontalDivider(
