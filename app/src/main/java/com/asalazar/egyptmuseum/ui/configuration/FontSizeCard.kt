@@ -1,7 +1,6 @@
 package com.asalazar.egyptmuseum.ui.configuration
 
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -14,10 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Settings
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -32,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.asalazar.egyptmuseum.R
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
+import com.asalazar.egyptmuseum.ui.theme.component.HeaderCard
+import com.asalazar.egyptmuseum.ui.theme.component.MuseumCard
 
 @Composable
 fun FontSizeCard(
@@ -39,20 +37,10 @@ fun FontSizeCard(
     modifier: Modifier = Modifier,
     onValueChange: (Float) -> Unit
 ) {
-    Card(
-        modifier = modifier,
-        elevation = CardDefaults.cardElevation(4.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.onSurface
-        )
+    MuseumCard(
+        headerCard = { FontSizeHeaderCard() },
+        modifier = modifier
     ) {
-        HeaderCard(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
-
         FontSizeSelector(
             currentValue,
             modifier = Modifier
@@ -99,6 +87,15 @@ private fun FontSizeSelector(
 }
 
 @Composable
+private fun FontSizeHeaderCard(modifier: Modifier = Modifier) {
+    HeaderCard(
+        title = "Tamaño del Texto",
+        icon = Icons.Sharp.Settings,
+        modifier = modifier
+    )
+}
+
+@Composable
 fun FontSizeSelectorLabels(
     currentValue: Int,
     modifier: Modifier = Modifier
@@ -121,18 +118,6 @@ fun FontSizeSelectorLabels(
                 }
             )
         }
-    }
-}
-
-@Composable
-private fun HeaderCard(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Icon(Icons.Sharp.Settings, contentDescription = null)
-        Text("Tamaño del Texto", style = MaterialTheme.typography.titleMedium)
     }
 }
 
