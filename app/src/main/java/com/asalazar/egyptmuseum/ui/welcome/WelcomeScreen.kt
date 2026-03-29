@@ -6,9 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.Settings
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +51,10 @@ private val connectorStyle = TextStyle(
 )
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    onEnterClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier.fillMaxSize(),
@@ -55,9 +62,36 @@ fun WelcomeScreen() {
             verticalArrangement = Arrangement.SpaceAround
         ) {
             WelcomeText()
-            EnterButton {/* TODO */ }
+            ButtonSection(
+                onEnterClick = onEnterClick,
+                onSettingsClick = onSettingsClick
+            )
         }
     }
+}
+
+@Composable
+private fun ButtonSection(
+    onEnterClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        EnterButton(onClick = onEnterClick)
+        TextButton(onClick = onSettingsClick) {
+            Icon(
+                Icons.Sharp.Settings,
+                contentDescription = null,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+            Text("CONFIGURACIÓN")
+        }
+    }
+
 }
 
 @Composable
@@ -97,11 +131,7 @@ private fun WelcomeText(modifier: Modifier = Modifier) {
 @Composable
 private fun EnterButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     PrimaryButton(onClick, modifier = modifier) {
-        Text(
-            "ENTRAR AL MUSEO",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
-        )
+        Text("ENTRAR AL MUSEO")
     }
 }
 
@@ -110,6 +140,6 @@ private fun EnterButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 @Composable
 private fun WelcomeScreenPreview() {
     EgyptMuseumTheme {
-        WelcomeScreen()
+        WelcomeScreen({},{})
     }
 }
