@@ -1,4 +1,4 @@
-package com.asalazar.egyptmuseum.ui.configuration
+package com.asalazar.egyptmuseum.ui.settings
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -63,7 +63,7 @@ private fun FontSizeSelector(
         Slider(
             value = currentValue,
             onValueChange = onValueChange,
-            valueRange = 0.8f..2f,
+            valueRange = 0.5f..1.5f,
             steps = 1,
             modifier = Modifier.fillMaxWidth(),
             colors = SliderDefaults.colors(

@@ -5,20 +5,26 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.asalazar.egyptmuseum.ui.configuration.ConfigurationScreen
+import com.asalazar.egyptmuseum.ui.settings.SettingsScreen
+import com.asalazar.egyptmuseum.ui.settings.SettingsViewModel
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
 import com.asalazar.egyptmuseum.ui.welcome.WelcomeScreen
 import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EgyptMuseumTheme {
+            val viewModel: SettingsViewModel = koinViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            EgyptMuseumTheme(fontScale = uiState.fontScale) {
                 AppNavigation()
             }
         }
@@ -41,7 +47,7 @@ fun AppNavigation() {
         }
 
         composable<Screen.Configuration> {
-            ConfigurationScreen()
+            SettingsScreen(onPressedBack = navController::navigateUp)
         }
     }
 

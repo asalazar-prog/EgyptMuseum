@@ -1,4 +1,4 @@
-package com.asalazar.egyptmuseum.ui.configuration
+package com.asalazar.egyptmuseum.ui.settings
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -26,10 +26,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.asalazar.egyptmuseum.domain.settings.model.AgeCategory
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
 import com.asalazar.egyptmuseum.ui.theme.component.HeaderCard
 import com.asalazar.egyptmuseum.ui.theme.component.MuseumCard
@@ -74,12 +77,6 @@ private fun AgeFilterHeader(modifier: Modifier = Modifier) {
     )
 }
 
-enum class AgeCategory(val title: String, val subtitle: String) {
-    KIDS("Niños", "Curiosidad"),
-    TEENS("Jóvenes", "Exploración"),
-    ADULTS("Adultos", "Misterios")
-}
-
 @Composable
 private fun AgeFilterCard(
     category: AgeCategory,
@@ -92,12 +89,16 @@ private fun AgeFilterCard(
         if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
     val backgroundColor =
         if (isSelected) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface
+    val haptic = LocalHapticFeedback.current
 
     Card(
         modifier = modifier
             .selectable(
                 selected = isSelected,
-                onClick = onClick,
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                    onClick()
+                },
                 role = Role.RadioButton
             ),
         shape = RoundedCornerShape(12.dp),

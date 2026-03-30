@@ -1,64 +1,55 @@
-package com.asalazar.egyptmuseum.ui.configuration
+package com.asalazar.egyptmuseum.ui.settings
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.ArrowBack
-import androidx.compose.material.icons.sharp.RestartAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.asalazar.egyptmuseum.domain.settings.model.AgeCategory
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
-import com.asalazar.egyptmuseum.ui.theme.component.PrimaryButton
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ConfigurationScreen() {
-
-    val viewModel: ConfigurationViewModel =
-        remember { ConfigurationViewModel() } /*TODO: Implement factory*/
-
-    val fontScale by viewModel.fontScale.collectAsStateWithLifecycle()
-    val ageCategory by viewModel.ageCategory.collectAsStateWithLifecycle()
-
-    val uiState = ConfigurationUiState(
-        fontScale = fontScale,
-        selectedCategory = ageCategory
-    )
+fun SettingsScreen(
+    onPressedBack: () -> Unit,
+    viewModel: SettingsViewModel = koinViewModel()
+) {
+    val configurationState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val actions = remember(viewModel) {
         ConfigurationUiActions(
             onFontScaleChange = viewModel::updateFontScale,
-            onCategorySelected = viewModel::updateAgeCategory
+            onCategorySelected = viewModel::updateAgeCategory,
+            onPressedBack = onPressedBack
         )
     }
 
-    ConfigurationContent(uiState = uiState, actions = actions)
+    SettingsContent(uiState = configurationState, actions = actions)
 }
 
 @Composable
-private fun ConfigurationContent(
+private fun SettingsContent(
     uiState: ConfigurationUiState,
     actions: ConfigurationUiActions
 ) {
@@ -66,10 +57,7 @@ private fun ConfigurationContent(
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding(),
-        topBar = { ConfigurationTopBar() },
-        bottomBar = {
-            BottomBar(modifier = Modifier.padding(16.dp))
-        }
+        topBar = { ConfigurationTopBar(actions.onPressedBack) }
     ) {
         Column(
             modifier = Modifier
@@ -86,42 +74,18 @@ private fun ConfigurationContent(
     }
 }
 
-@Composable
-private fun BottomBar(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        PrimaryButton(
-            onClick = {},
-            modifier = Modifier.widthIn(min = 250.dp)
-        ) { Text("ACEPTAR") }
-
-        TextButton(
-            onClick = {},
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                Icons.Sharp.RestartAlt,
-                contentDescription = null,
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
-            Text("RESTABLECER", color = MaterialTheme.colorScheme.tertiary)
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfigurationTopBar() {
+fun ConfigurationTopBar(onPressedBack: () -> Unit) {
     MediumTopAppBar(
         title = { Title() },
         navigationIcon = {
-            Icon(
-                imageVector = Icons.Sharp.ArrowBack,
-                contentDescription = "Atras"
-            )
+            IconButton(onClick = onPressedBack) {
+                Icon(
+                    imageVector = Icons.Sharp.ArrowBack,
+                    contentDescription = "Atras"
+                )
+            }
         }
     )
 }
@@ -143,23 +107,25 @@ data class ConfigurationUiState(
 data class ConfigurationUiActions(
     val onFontScaleChange: (Float) -> Unit,
     val onCategorySelected: (AgeCategory) -> Unit,
-    val onToggleContrast: (Boolean) -> Unit = {}
+    val onToggleContrast: (Boolean) -> Unit = {},
+    val onPressedBack: () -> Unit
 )
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
 @Preview
 @Composable
-private fun ConfigurationContentPreview() {
+private fun SettingsContentPreview() {
     var fontScale by remember { mutableFloatStateOf(1.0f) }
     var category by remember { mutableStateOf(AgeCategory.KIDS) }
 
     EgyptMuseumTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
-            ConfigurationContent(
+            SettingsContent(
                 uiState = ConfigurationUiState(fontScale, category),
                 actions = ConfigurationUiActions(
                     onFontScaleChange = { fontScale = it },
-                    onCategorySelected = { category = it }
+                    onCategorySelected = { category = it },
+                    onPressedBack = {}
                 )
             )
         }
