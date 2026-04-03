@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.asalazar.egyptmuseum.ui.discovery.DiscoveryScreen
 import com.asalazar.egyptmuseum.ui.settings.SettingsScreen
 import com.asalazar.egyptmuseum.ui.settings.SettingsViewModel
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
@@ -41,13 +42,17 @@ fun AppNavigation() {
     ) {
         composable<Screen.Welcome> {
             WelcomeScreen(
-                onEnterClick = {},
+                onEnterClick = { navController.navigate(Screen.Discovery) },
                 onSettingsClick = { navController.navigate(Screen.Configuration) }
             )
         }
 
         composable<Screen.Configuration> {
             SettingsScreen(onPressedBack = navController::navigateUp)
+        }
+
+        composable<Screen.Discovery> {
+            DiscoveryScreen()
         }
     }
 
@@ -59,6 +64,9 @@ sealed interface Screen {
 
     @Serializable
     data object Configuration : Screen
+
+    @Serializable
+    data object Discovery : Screen
 }
 
 
