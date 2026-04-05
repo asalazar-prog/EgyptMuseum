@@ -6,16 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -32,7 +24,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreen(
-    onPressedBack: () -> Unit,
     viewModel: SettingsViewModel = koinViewModel()
 ) {
     val configurationState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -40,8 +31,7 @@ fun SettingsScreen(
     val actions = remember(viewModel) {
         ConfigurationUiActions(
             onFontScaleChange = viewModel::updateFontScale,
-            onCategorySelected = viewModel::updateAgeCategory,
-            onPressedBack = onPressedBack
+            onCategorySelected = viewModel::updateAgeCategory
         )
     }
 
@@ -53,49 +43,19 @@ private fun SettingsContent(
     uiState: ConfigurationUiState,
     actions: ConfigurationUiActions
 ) {
-    Scaffold(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsPadding(),
-        topBar = { ConfigurationTopBar(actions.onPressedBack) }
+            .navigationBarsPadding()
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            FontSizeCard(uiState.fontScale, onValueChange = actions.onFontScaleChange)
-            AgeFilterCard(
-                selectedCategory = uiState.selectedCategory,
-                onCategorySelected = actions.onCategorySelected
-            )
-        }
+        FontSizeCard(uiState.fontScale, onValueChange = actions.onFontScaleChange)
+        AgeFilterCard(
+            selectedCategory = uiState.selectedCategory,
+            onCategorySelected = actions.onCategorySelected
+        )
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ConfigurationTopBar(onPressedBack: () -> Unit) {
-    MediumTopAppBar(
-        title = { Title() },
-        navigationIcon = {
-            IconButton(onClick = onPressedBack) {
-                Icon(
-                    imageVector = Icons.Sharp.ArrowBack,
-                    contentDescription = "Atras"
-                )
-            }
-        }
-    )
-}
-
-@Composable
-private fun Title(modifier: Modifier = Modifier) {
-    Text(
-        text = "Accesibilidad",
-        modifier = modifier
-    )
 }
 
 data class ConfigurationUiState(
@@ -107,8 +67,7 @@ data class ConfigurationUiState(
 data class ConfigurationUiActions(
     val onFontScaleChange: (Float) -> Unit,
     val onCategorySelected: (AgeCategory) -> Unit,
-    val onToggleContrast: (Boolean) -> Unit = {},
-    val onPressedBack: () -> Unit
+    val onToggleContrast: (Boolean) -> Unit = {}
 )
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
@@ -124,8 +83,7 @@ private fun SettingsContentPreview() {
                 uiState = ConfigurationUiState(fontScale, category),
                 actions = ConfigurationUiActions(
                     onFontScaleChange = { fontScale = it },
-                    onCategorySelected = { category = it },
-                    onPressedBack = {}
+                    onCategorySelected = { category = it }
                 )
             )
         }
