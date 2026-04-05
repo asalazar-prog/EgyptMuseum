@@ -12,4 +12,6 @@
     <string name="lbl_architecture_category">Arquitectura</string>
     <string name="lbl_life_category">Vida cotidiana</string>
     <string name="lbl_art_category">Arte</string>
+    <string name="title_accesibilidad">Accesibilidad</string>
+    <string name="title_discovery">Explorar Museo</string>
 </resources>

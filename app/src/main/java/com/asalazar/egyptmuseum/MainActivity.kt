@@ -17,6 +17,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -54,6 +57,7 @@ fun MainApp() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val haptic = LocalHapticFeedback.current
 
     val showTopBar =
         currentDestination?.hierarchy?.any { it.hasRoute(Screen.Welcome::class) } == false
@@ -65,7 +69,10 @@ fun MainApp() {
                 GlobalTopBar(
                     currentDestination = currentDestination,
                     canNavigateBack = navController.previousBackStackEntry != null,
-                    onBackPressed = { navController.navigateUp() }
+                    onBackPressed = {
+                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                        navController.navigateUp()
+                    }
                 )
             }
         }
@@ -85,9 +92,9 @@ fun GlobalTopBar(
     onBackPressed: () -> Unit
 ) {
     val title = when {
-        currentDestination?.hasRoute(Screen.Configuration::class) == true -> "Accesibilidad"
-        currentDestination?.hasRoute(Screen.Discovery::class) == true -> "Explorar Museo"
-        currentDestination?.hasRoute(Screen.ArticlesScreen::class) == true -> "Explorar Museo"
+        currentDestination?.hasRoute(Screen.Configuration::class) == true -> stringResource(R.string.title_accesibilidad)
+        currentDestination?.hasRoute(Screen.Discovery::class) == true -> stringResource(R.string.title_discovery)
+        currentDestination?.hasRoute(Screen.ArticlesScreen::class) == true -> stringResource(R.string.title_discovery)
         else -> ""
     }
 
@@ -114,6 +121,8 @@ fun AppNavigation(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val haptic = LocalHapticFeedback.current
+
     NavHost(
         navController = navController,
         startDestination = Screen.Welcome,
@@ -121,8 +130,14 @@ fun AppNavigation(
     ) {
         composable<Screen.Welcome> {
             WelcomeScreen(
-                onEnterClick = { navController.navigate(Screen.Discovery) },
-                onSettingsClick = { navController.navigate(Screen.Configuration) }
+                onEnterClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                    navController.navigate(Screen.Discovery)
+                },
+                onSettingsClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                    navController.navigate(Screen.Configuration)
+                }
             )
         }
 
@@ -133,6 +148,7 @@ fun AppNavigation(
         composable<Screen.Discovery> {
             DiscoveryScreen(
                 onCategorySelected = { type ->
+                    haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                     navController.navigate(Screen.ArticlesScreen(type))
                 })
         }
