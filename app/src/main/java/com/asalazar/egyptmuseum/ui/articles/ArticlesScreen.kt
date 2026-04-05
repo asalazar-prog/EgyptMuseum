@@ -1,0 +1,111 @@
+package com.asalazar.egyptmuseum.ui.articles
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.asalazar.egyptmuseum.R
+import com.asalazar.egyptmuseum.data.discovery.MockEgyptRepository
+import com.asalazar.egyptmuseum.domain.discovery.model.Article
+import com.asalazar.egyptmuseum.domain.discovery.model.CategoryType
+import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
+import org.koin.androidx.compose.koinViewModel
+
+@Composable
+fun ArticlesScreen(
+    articlesViewModel: ArticlesViewModel = koinViewModel()
+) {
+    val category by articlesViewModel.currentCategory.collectAsStateWithLifecycle()
+
+    category ?: return
+
+    ArticlesScreenContent(
+        category!!.id,
+        articles = category!!.articles,
+        onUpdateCategory = articlesViewModel::updateCategory
+    )
+}
+
+@Composable
+private fun ArticlesScreenContent(
+    currentCategory: CategoryType,
+    articles: List<Article>,
+    onUpdateCategory: (CategoryType) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+
+        stickyHeader {
+            CategoryTabRow(currentCategory, onTabSelected = onUpdateCategory)
+        }
+
+        items(articles) { article ->
+            ArticleItem(article)
+        }
+    }
+}
+
+@Composable
+fun ArticleItem(
+    article: Article,
+    modifier: Modifier = Modifier
+) {
+    Text(article.title, modifier = modifier)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CategoryTabRow(
+    currentCategory: CategoryType,
+    modifier: Modifier = Modifier,
+    categories: Array<CategoryType> = CategoryType.entries.toTypedArray(),
+    onTabSelected: (CategoryType) -> Unit
+) {
+    PrimaryTabRow(
+        categories.indexOf(currentCategory),
+        modifier = modifier,
+    ) {
+        categories.forEachIndexed { index, type ->
+            Tab(
+                selected = type == currentCategory,
+                onClick = { type.let(onTabSelected) },
+                text = { Text(type.label()) }
+            )
+        }
+    }
+}
+
+@Composable
+fun CategoryType.label(): String = when (this) {
+    CategoryType.LIFE -> stringResource(R.string.lbl_life_category)
+    CategoryType.ARCHITECTURE -> stringResource(R.string.lbl_architecture_category)
+    CategoryType.ART -> stringResource(R.string.lbl_art_category)
+}
+
+@Preview
+@Composable
+private fun ArticlesScreenPreview() {
+    val mockData = MockEgyptRepository()
+        .getCategoryById(CategoryType.ARCHITECTURE)
+        ?.articles
+
+    EgyptMuseumTheme {
+        ArticlesScreenContent(
+            currentCategory = CategoryType.ARCHITECTURE,
+            mockData ?: listOf()
+        ) {}
+    }
+}

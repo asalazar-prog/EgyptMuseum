@@ -11,25 +11,25 @@ class MockEgyptRepository : EgyptRepository {
 
     private val categories = listOf(
         Category(
-            id = CategoryType.VIDA_COTIDIANA,
+            id = CategoryType.LIFE,
             title = "Vida Cotidiana",
             subtitle = "Comercio, familia y tradiciones a orillas del Nilo.",
             imageUrl = "$baseUrl/egypt_life_category.webp",
-            articles = createMockArticles("Vida", CategoryType.VIDA_COTIDIANA)
+            articles = createMockArticles("Vida", CategoryType.LIFE)
         ),
         Category(
-            id = CategoryType.ARQUITECTURA,
+            id = CategoryType.ARCHITECTURE,
             title = "Arquitectura",
             subtitle = "Monumentos eternos y la ingeniería de los dioses.",
             imageUrl = "$baseUrl/egypt_architecture_category.webp",
-            articles = createMockArticles("Arq", CategoryType.ARQUITECTURA)
+            articles = createMockArticles("Arq", CategoryType.ARCHITECTURE)
         ),
         Category(
-            id = CategoryType.ARTE,
+            id = CategoryType.ART,
             title = "Arte",
             subtitle = "Esculturas, frescos y la belleza de lo sagrado.",
             imageUrl = "$baseUrl/egypt_art_category.webp",
-            articles = createMockArticles("Arte", CategoryType.ARTE)
+            articles = createMockArticles("Arte", CategoryType.ART)
         )
     )
 

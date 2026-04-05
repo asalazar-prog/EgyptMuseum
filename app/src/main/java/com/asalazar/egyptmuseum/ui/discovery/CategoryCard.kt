@@ -101,7 +101,7 @@ private fun SubtitleText(subtitle: String, modifier: Modifier = Modifier) {
 private fun CategoryCardPreview() {
     val categoryMock = remember {
         Category(
-            id = CategoryType.ARTE,
+            id = CategoryType.ART,
             title = "Arte",
             subtitle = "Esculturas, frascos y la belleza de lo sagrado.",
             imageUrl = "https://raw.githubusercontent.com/asalazar-prog/EgyptMuseum/assets/images/egypt_architecture_category.webp",

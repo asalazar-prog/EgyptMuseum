@@ -10,6 +10,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.asalazar.egyptmuseum.domain.discovery.model.CategoryType
+import com.asalazar.egyptmuseum.ui.articles.ArticlesScreen
 import com.asalazar.egyptmuseum.ui.discovery.DiscoveryScreen
 import com.asalazar.egyptmuseum.ui.settings.SettingsScreen
 import com.asalazar.egyptmuseum.ui.settings.SettingsViewModel
@@ -52,10 +54,17 @@ fun AppNavigation() {
         }
 
         composable<Screen.Discovery> {
-            DiscoveryScreen()
+            DiscoveryScreen(
+                onBackPressed = navController::navigateUp,
+                onCategorySelected = { type ->
+                    navController.navigate(Screen.ArticlesScreen(type))
+                })
+        }
+
+        composable<Screen.ArticlesScreen> {
+            ArticlesScreen()
         }
     }
-
 }
 
 sealed interface Screen {
@@ -67,6 +76,9 @@ sealed interface Screen {
 
     @Serializable
     data object Discovery : Screen
+
+    @Serializable
+    data class ArticlesScreen(val categoryType: CategoryType) : Screen
 }
 
 

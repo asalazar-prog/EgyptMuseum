@@ -9,4 +9,7 @@
         <item>NORMAL</item>
         <item>GRANDE</item>
     </string-array>
+    <string name="lbl_architecture_category">Arquitectura</string>
+    <string name="lbl_life_category">Vida cotidiana</string>
+    <string name="lbl_art_category">Arte</string>
 </resources>
