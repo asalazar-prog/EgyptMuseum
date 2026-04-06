@@ -4,6 +4,7 @@ import com.asalazar.egyptmuseum.data.discovery.EgyptRepository
 import com.asalazar.egyptmuseum.data.discovery.MockEgyptRepository
 import com.asalazar.egyptmuseum.data.settings.SettingsRepository
 import com.asalazar.egyptmuseum.dataStore
+import com.asalazar.egyptmuseum.ui.articles.ArticleDetailViewModel
 import com.asalazar.egyptmuseum.ui.articles.ArticlesViewModel
 import com.asalazar.egyptmuseum.ui.discovery.DiscoveryViewModel
 import com.asalazar.egyptmuseum.ui.settings.SettingsViewModel
@@ -27,4 +28,5 @@ val appModule = module {
 
     viewModelOf(::DiscoveryViewModel)
     viewModelOf(::ArticlesViewModel)
+    viewModelOf(::ArticleDetailViewModel)
 }

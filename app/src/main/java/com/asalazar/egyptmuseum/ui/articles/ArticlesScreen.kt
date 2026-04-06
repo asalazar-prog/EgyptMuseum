@@ -37,7 +37,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ArticlesScreen(
-    articlesViewModel: ArticlesViewModel = koinViewModel()
+    articlesViewModel: ArticlesViewModel = koinViewModel(),
+    onArticleSelected: (Int, CategoryType) -> Unit
 ) {
     val category by articlesViewModel.currentCategory.collectAsStateWithLifecycle()
 
@@ -47,14 +48,17 @@ fun ArticlesScreen(
         category!!.id,
         articles = category!!.articles,
         onUpdateCategory = articlesViewModel::updateCategory
-    )
+    ) {
+        onArticleSelected(it, category!!.id)
+    }
 }
 
 @Composable
 private fun ArticlesScreenContent(
     currentCategory: CategoryType,
     articles: List<Article>,
-    onUpdateCategory: (CategoryType) -> Unit
+    onUpdateCategory: (CategoryType) -> Unit,
+    onArticleSelected: (Int) -> Unit = {}
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -66,7 +70,9 @@ private fun ArticlesScreenContent(
         }
 
         items(articles) { article ->
-            ArticleItem(article, modifier = Modifier.padding(horizontal = 8.dp))
+            ArticleItem(article, modifier = Modifier.padding(horizontal = 8.dp)) {
+                onArticleSelected(article.id)
+            }
         }
     }
 }
@@ -74,18 +80,20 @@ private fun ArticlesScreenContent(
 @Composable
 fun ArticleItem(
     article: Article,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = modifier,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        onClick = onClick
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(article.coverImageUrl)
                 .crossfade(true)
                 .build(),
-            contentDescription = null,
+            contentDescription = article.coverDescriptionImage,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxWidth()
         )
@@ -153,7 +161,8 @@ private fun ArticlesScreenPreview() {
     EgyptMuseumTheme {
         ArticlesScreenContent(
             currentCategory = CategoryType.ARCHITECTURE,
-            mockData ?: listOf()
+            mockData ?: listOf(),
+            {}
         ) {}
     }
 }

@@ -29,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.asalazar.egyptmuseum.domain.discovery.model.CategoryType
+import com.asalazar.egyptmuseum.ui.articles.ArticleDetailScreen
 import com.asalazar.egyptmuseum.ui.articles.ArticlesScreen
 import com.asalazar.egyptmuseum.ui.discovery.DiscoveryScreen
 import com.asalazar.egyptmuseum.ui.settings.SettingsScreen
@@ -154,7 +155,14 @@ fun AppNavigation(
         }
 
         composable<Screen.ArticlesScreen> {
-            ArticlesScreen()
+            ArticlesScreen { articleId, categoryType ->
+                haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                navController.navigate(Screen.ArticleDetailScreen(categoryType, articleId))
+            }
+        }
+
+        composable<Screen.ArticleDetailScreen> {
+            ArticleDetailScreen()
         }
     }
 }
@@ -171,4 +179,7 @@ sealed interface Screen {
 
     @Serializable
     data class ArticlesScreen(val categoryType: CategoryType) : Screen
+
+    @Serializable
+    data class ArticleDetailScreen(val categoryType: CategoryType, val articleId: Int) : Screen
 }
