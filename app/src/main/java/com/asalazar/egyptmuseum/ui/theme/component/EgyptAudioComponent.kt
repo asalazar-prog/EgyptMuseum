@@ -2,11 +2,9 @@ package com.asalazar.egyptmuseum.ui.theme.component
 
 import android.content.ComponentName
 import android.net.Uri
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,13 +39,13 @@ fun EgyptAudioComponent(audioUri: Uri) {
         }
     }
 
-    Column {
-        Button(onClick = {
-            playerController?.setMediaItem(MediaItem.fromUri(audioUri))
-            playerController?.prepare()
-            playerController?.play()
-        }) {
-            Text("Iniciar Guía de Audio")
+    LaunchedEffect(audioUri, playerController) {
+        playerController?.let {
+            it.setMediaItem(MediaItem.fromUri(audioUri))
+            it.prepare()
         }
     }
+
+    EgyptAudioController(playerController)
+
 }

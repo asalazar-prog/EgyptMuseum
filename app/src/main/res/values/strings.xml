@@ -15,4 +15,8 @@
     <string name="title_accesibilidad">Accesibilidad</string>
     <string name="title_discovery">Explorar Museo</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis purus rutrum, laoreet velit sit amet, mollis augue. Vivamus porta odio eu mauris bibendum, ac maximus purus accumsan. Sed mollis nibh quis finibus placerat. Phasellus iaculis orci nulla, et cursus magna fringilla non. Aliquam erat volutpat. Nullam nulla arcu, mattis malesuada ante id, consequat hendrerit sapien. Suspendisse ante dolor, molestie ac tincidunt id, luctus non augue. Nulla facilisi. Suspendisse potenti. Vivamus vitae quam sapien. Maecenas a mattis tortor, vel condimentum urna. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In rutrum eu metus vel consectetur.</string>
+    <string name="lbl_pause">Pausar</string>
+    <string name="lbl_play">Reproducir</string>
+    <string name="lbl_restart">Reiniciar</string>
+    <string name="title_audio_controller">Guía en Audio</string>
 </resources>

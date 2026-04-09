@@ -1,6 +1,8 @@
 package com.asalazar.egyptmuseum.ui.util
 
 import androidx.compose.foundation.clickable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -11,5 +13,16 @@ fun Modifier.vibrateOnClick(onClick: () -> Unit): Modifier = composed {
     this.clickable {
         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
         onClick()
+    }
+}
+
+@Composable
+fun vibrateWrapperConfirm(onClick: () -> Unit): () -> Unit {
+    val haptic = LocalHapticFeedback.current
+    return remember(onClick) {
+        {
+            haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+            onClick()
+        }
     }
 }
