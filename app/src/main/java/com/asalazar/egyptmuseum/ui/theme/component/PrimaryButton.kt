@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 object PrimaryButtonDefault {
@@ -34,7 +35,7 @@ fun PrimaryButton(
         modifier = modifier.defaultMinSize(minHeight = PrimaryButtonDefault.MinHeight),
         content = {
             CompositionLocalProvider(
-                LocalTextStyle provides MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                LocalTextStyle provides MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center),
                 content = content
             )
         },
