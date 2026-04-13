@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -27,6 +28,7 @@ import com.asalazar.egyptmuseum.domain.discovery.model.Article
 import com.asalazar.egyptmuseum.domain.discovery.model.CategoryType
 import com.asalazar.egyptmuseum.ui.theme.EgyptMuseumTheme
 import com.asalazar.egyptmuseum.ui.theme.component.EgyptAudioComponent
+import com.asalazar.egyptmuseum.ui.theme.component.EgyptVideoPlayer
 import com.asalazar.egyptmuseum.ui.theme.component.MuseumHorizontalDivider
 import org.koin.androidx.compose.koinViewModel
 
@@ -66,13 +68,24 @@ private fun ArticleDetailScreenContent(article: Article) {
         Text(article.description)
         Spacer(Modifier.padding(8.dp))
         BodyArticle()
+
+        Spacer(Modifier.padding(8.dp))
+
+        EgyptVideoPlayer(R.raw.egypt_short_720, modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(4/3f)
+        )
+
+        Spacer(Modifier.padding(8.dp))
+
+        BodyArticle()
+
         AsyncImage(
             ImageRequest.Builder(LocalContext.current)
                 .data("https://content-historia.nationalgeographic.com.es/medio/2023/07/14/el-dios-solar-re-con-cabeza-de-halcon-acompanado-de-maat-diosa-de-la-justicia-y-el-orden-pintura-de-la-tumba-de-tausert-y-setnakht-en-el-valle-de-los-reyes_ce253200_230714095645_1280x720.jpg")
                 .crossfade(true)
                 .build(), contentDescription = null
         )
-        BodyArticle()
     }
 }
 
